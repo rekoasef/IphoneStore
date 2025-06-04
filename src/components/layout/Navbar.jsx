@@ -24,6 +24,7 @@ const Navbar = () => {
           {/* Links de navegación */}
           <Link to="/" className="text-light-text-secundario dark:text-dark-text-secundario hover:text-brand-acento dark:hover:text-brand-acento transition-colors px-2 py-1 rounded-md text-sm md:text-base">Inicio</Link>
           <Link to="/catalogo" className="text-light-text-secundario dark:text-dark-text-secundario hover:text-brand-acento dark:hover:text-brand-acento transition-colors px-2 py-1 rounded-md text-sm md:text-base">Catálogo</Link>
+          <Link to="/testimonios" className="text-light-text-secundario dark:text-dark-text-secundario hover:text-brand-acento dark:hover:text-brand-acento transition-colors px-2 py-1 rounded-md text-sm md:text-base">Testimonios</Link>
           <Link to="/contacto" className="text-light-text-secundario dark:text-dark-text-secundario hover:text-brand-acento dark:hover:text-brand-acento transition-colors px-2 py-1 rounded-md text-sm md:text-base">Contacto</Link>
           <ThemeToggleButton />
         </div>
