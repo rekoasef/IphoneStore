@@ -2,13 +2,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ThemeToggleButton from '../common/ThemeToggleButton';
-import { useTheme } from '../../contexts/ThemeContext.jsx'; // <-- AÑADE ESTA LÍNEA
+import { useTheme } from '../../contexts/ThemeContext'; // Importante tener esta línea
 
 const Navbar = () => {
-  const { theme: currentTheme } = useTheme(); // Ahora useTheme está definido y puedes acceder a 'theme'
+  const { theme: currentTheme } = useTheme();
 
-  const logoClaro = '/logo-claro.png';
-  const logoOscuro = '/logo-oscuro.png';
+  const logoClaro = '/logo-claro.png'; // Debe estar en la carpeta /public
+  const logoOscuro = '/logo-oscuro.png'; // Debe estar en la carpeta /public
 
   return (
     <nav className="bg-light-bg dark:bg-dark-bg shadow-md sticky top-0 z-50 border-b border-light-borde dark:border-dark-borde">
@@ -21,7 +21,6 @@ const Navbar = () => {
           />
         </Link>
         <div className="flex items-center space-x-1 md:space-x-2">
-          {/* Links de navegación */}
           <Link to="/" className="text-light-text-secundario dark:text-dark-text-secundario hover:text-brand-acento dark:hover:text-brand-acento transition-colors px-2 py-1 rounded-md text-sm md:text-base">Inicio</Link>
           <Link to="/catalogo" className="text-light-text-secundario dark:text-dark-text-secundario hover:text-brand-acento dark:hover:text-brand-acento transition-colors px-2 py-1 rounded-md text-sm md:text-base">Catálogo</Link>
           <Link to="/testimonios" className="text-light-text-secundario dark:text-dark-text-secundario hover:text-brand-acento dark:hover:text-brand-acento transition-colors px-2 py-1 rounded-md text-sm md:text-base">Testimonios</Link>
