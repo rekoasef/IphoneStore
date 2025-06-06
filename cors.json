@@ -1,0 +1,13 @@
+[
+  {
+    "origin": [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://iphone-store-catalogo.web.app",
+      "https://iphone-store-catalogo.firebaseapp.com"
+    ],
+    "method": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "header": ["Content-Type", "Authorization"],
+    "maxAgeSeconds": 3600
+  }
+]

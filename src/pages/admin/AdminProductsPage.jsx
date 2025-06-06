@@ -1,7 +1,7 @@
 // src/pages/admin/AdminProductsPage.jsx
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // Para el botón "Crear Nuevo"
-import { getAllProductsAdmin } from '../../services/productService'; // Ajusta la ruta si es necesario
+import { Link, useNavigate } from 'react-router-dom';
+import { getAllProductsAdmin, deleteProduct } from '../../services/productService';
 import { FaEdit, FaTrash, FaEye, FaEyeSlash, FaPlusCircle } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
 
@@ -9,46 +9,48 @@ const AdminProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Filtros y búsqueda (placeholders por ahora, se pueden implementar más tarde)
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  // const [categoryFilter, setCategoryFilter] = useState('all');
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getAllProductsAdmin();
+      setProducts(data);
+    } catch (err) {
+      setError("Error al cargar productos.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getAllProductsAdmin();
-        setProducts(data);
-      } catch (err) {
-        setError("Error al cargar productos.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProducts();
   }, []);
 
   const handleEdit = (productId) => {
-    console.log("Editar producto ID:", productId);
-    // Lógica para navegar a la página/modal de edición: navigate(`/admin/productos/editar/${productId}`)
+    navigate(`/admin/productos/editar/${productId}`);
   };
 
-  const handleDelete = (productId) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.')) {
-      console.log("Eliminar producto ID:", productId);
-      // Lógica para llamar al servicio de eliminación y luego recargar productos
+  const handleDelete = async (productId, productName) => {
+    if (window.confirm(`¿Estás seguro de que quieres eliminar el producto "${productName}"? Esta acción es irreversible.`)) {
+      try {
+        await deleteProduct(productId);
+        // Actualizar el estado para remover el producto de la lista sin recargar la página
+        setProducts(prevProducts => prevProducts.filter(p => p.id !== productId));
+        alert("Producto eliminado con éxito.");
+      } catch (err) {
+        console.error("Error al eliminar producto:", err);
+        alert(`Error: No se pudo eliminar el producto. ${err.message}`);
+      }
     }
   };
-
-  // Productos filtrados (implementación básica de búsqueda por nombre)
+  
   const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    // && (categoryFilter === 'all' || product.type.toLowerCase() === categoryFilter)
+    product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
 
   if (loading) return (
     <div className="text-center py-10 flex flex-col items-center justify-center">
@@ -65,7 +67,7 @@ const AdminProductsPage = () => {
           Gestionar Productos
         </h1>
         <Link
-          to="/admin/productos/nuevo" // Ruta para crear nuevo producto (la definiremos)
+          to="/admin/productos/nuevo"
           className="bg-brand-acento hover:opacity-80 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 transition-colors text-sm"
         >
           <FaPlusCircle />
@@ -73,7 +75,6 @@ const AdminProductsPage = () => {
         </Link>
       </div>
 
-      {/* Filtros y Búsqueda (simplificado por ahora) */}
       <div className="mb-6">
         <input
           type="text"
@@ -82,9 +83,7 @@ const AdminProductsPage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full md:w-1/2 lg:w-1/3 p-2.5 rounded-lg border bg-light-bg dark:bg-dark-bg-secondary border-light-borde dark:border-dark-borde focus:ring-brand-acento focus:border-brand-acento text-sm"
         />
-        {/* Aquí podrían ir más selectores de filtro si se necesitan */}
       </div>
-
 
       <div className="bg-light-bg dark:bg-dark-bg shadow-md rounded-lg overflow-x-auto">
         <table className="min-w-full divide-y divide-light-borde dark:divide-dark-borde">
@@ -115,12 +114,12 @@ const AdminProductsPage = () => {
                     {product.stock > 0 ? product.stock : 'Agotado'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                <td className="px-6 py-4 whitespace-nowrap text-sm flex justify-center">
                   {product.isVisible ? <FaEye className="text-green-500" title="Visible" /> : <FaEyeSlash className="text-red-500" title="Oculto" />}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
                   <button onClick={() => handleEdit(product.id)} className="text-blue-500 hover:text-blue-700" title="Editar"><FaEdit size={18}/></button>
-                  <button onClick={() => handleDelete(product.id)} className="text-red-500 hover:text-red-700" title="Eliminar"><FaTrash size={18}/></button>
+                  <button onClick={() => handleDelete(product.id, product.name)} className="text-red-500 hover:text-red-700" title="Eliminar"><FaTrash size={18}/></button>
                 </td>
               </tr>
             ))}

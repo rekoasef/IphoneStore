@@ -27,9 +27,10 @@ import ProductDetailPage from './pages/ProductDetailPage';
 
 // Páginas de Admin
 import AdminLoginPage from './pages/admin/AdminLoginPage';
-import AdminDashboardPage from './pages/admin/AdminDashboardPage'; // <-- IMPORTAR DASHBOARD DEL ADMIN
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminTestimonialsPage from './pages/admin/AdminTestimonialsPage';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
+import AdminProductFormPage from './pages/admin/AdminProductFormPage';
 
 function App() {
   return (
@@ -44,6 +45,8 @@ function App() {
           <Route path="dashboard" element={<AdminDashboardPage />} />
           <Route path="productos" element={<AdminProductsPage />} />
           <Route path="testimonios" element={<AdminTestimonialsPage />} />
+          <Route path="productos/nuevo" element={<AdminProductFormPage mode="create" />} />
+          <Route path="productos/editar/:productId" element={<AdminProductFormPage mode="edit" />} />
           {/* Otras rutas de admin anidadas aquí */}
         </Route>
       </Route>
