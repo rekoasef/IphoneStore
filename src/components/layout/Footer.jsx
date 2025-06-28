@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'; // <-- IMPORTAR Link
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const instagramUrl = "https://instagram.com/TUPERFILDEINSTAGRAM"; // Reemplazar
-  const whatsappUrl = "https://wa.me/TUNUMERODEWHATSAPP"; // Reemplazar
+  const instagramUrl = "https://instagram.com/iphone.store_2"; // Reemplazar
+  const whatsappUrl = "https://wa.me/5493471592234?text=Hola!%20Me%20gustaría%20hacer%20una%20consulta."; // Reemplazar
 
   const footerLinks = [
     { path: "/quienes-somos", label: "Quiénes Somos" },
@@ -56,7 +56,7 @@ const Footer = () => {
           {/* Columna 3: Contacto Rápido (Opcional) */}
           <div className="text-center md:text-left">
             <h4 className="font-titulos text-lg font-semibold text-light-text-principal dark:text-dark-text-principal mb-3">Contacto Directo</h4>
-            <p className="text-sm mb-1">WhatsApp: <a href={whatsappUrl} className="hover:text-brand-acento">[Tu Número Aquí]</a></p>
+            <p className="text-sm mb-1">WhatsApp: <a href={whatsappUrl} target="_blank" className="hover:text-brand-acento">Click aqui para contactarnos!</a></p>
             <p className="text-sm">Tortugas, Santa Fe, Argentina</p>
             {/* <p className="text-sm">Email: tuemail@example.com</p> */}
           </div>
