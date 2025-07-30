@@ -1,4 +1,4 @@
-// src/pages/HomePage.jsx
+// src/pages/HomePage.jsx (CON ANIMACIÓN DE ENTRADA SECUENCIAL)
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -23,7 +23,7 @@ const HomePage = () => {
     const fetchFeatured = async () => {
       try {
         setLoadingIphones(true);
-        const iphones = await getFeaturedProductsByType("iPhone", 5); // Aumentamos a 5 por si quieres mostrar más
+        const iphones = await getFeaturedProductsByType("iPhone", 5);
         setFeaturedIphones(iphones);
       } catch (error) {
         console.error("Error fetching featured iPhones:", error);
@@ -43,38 +43,27 @@ const HomePage = () => {
     fetchFeatured();
   }, []);
 
-  // --- CONFIGURACIÓN DE ANIMACIONES ---
-
-  // Variante para el contenedor de la Hero Section, orquesta la animación de sus hijos
-  const heroContainerVariants = {
+  // --- Variantes para la animación de entrada secuencial ---
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 1, // Deja 0.2 segundos entre la animación de cada hijo
+        staggerChildren: 0.3, // Tiempo de retraso entre cada elemento hijo
       },
     },
   };
 
-  // Variante para cada item dentro de la Hero Section (logo, título, etc.)
-  const heroItemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
-  
-  // Variante para las secciones que aparecen con el scroll
-  const sectionOnScrollViewVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 }, // Empieza invisible y 20px más abajo
+    visible: { opacity: 1, y: 0 }, // Aparece y sube a su posición final
   };
 
   return (
-    <div className="flex-grow overflow-x-hidden">
-      
-      {/* 1. Hero Section con animación secuencial */}
-      <motion.section 
+    <div>
+      <motion.section
         className="py-16 md:py-24 text-center bg-light-bg dark:bg-dark-bg"
-        variants={heroContainerVariants}
+        variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
@@ -83,24 +72,24 @@ const HomePage = () => {
             src={currentTheme === 'light' ? isologoOscuro : isologoClaro}
             alt="Isologo iPhone Store"
             className="h-20 md:h-24 mx-auto mb-8"
-            variants={heroItemVariants} // Aplica la variante de item
+            variants={itemVariants}
           />
-          <motion.h1 
+          <motion.h1
             className="font-titulos text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
-            variants={heroItemVariants} // Aplica la variante de item
+            variants={itemVariants}
           >
             <span className="text-light-text-principal dark:text-dark-text-principal">Bienvenido a </span>
             <span className="text-brand-acento">iPhone Store</span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="text-lg md:text-xl text-light-text-secundario dark:text-dark-text-secundario mb-10 max-w-2xl mx-auto"
-            variants={heroItemVariants} // Aplica la variante de item
+            variants={itemVariants}
           >
             Tu experto de confianza en Tortugas, Rosario y alrededores para iPhones y accesorios Apple. Calidad, garantía y los mejores precios, ¡todo en un solo lugar!
           </motion.p>
-          <motion.div 
+          <motion.div
             className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6"
-            variants={heroItemVariants} // Aplica la variante de item
+            variants={itemVariants}
           >
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="font-textos bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-8 rounded-lg text-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 min-w-[220px]">
               Consultar por WhatsApp
@@ -114,14 +103,8 @@ const HomePage = () => {
 
       <div className="h-px bg-light-borde dark:bg-dark-borde w-3/4 mx-auto my-8 md:my-12"></div>
 
-      {/* 2. Sección iPhones Destacados con nueva grilla y animación on-scroll */}
-      <motion.section
-        className="py-12 md:py-16 bg-light-bg-secondary dark:bg-dark-bg-secondary"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={sectionOnScrollViewVariants}
-      >
+      {/* El resto de la página se mantiene sin la animación motion */}
+      <section className="py-12 md:py-16 bg-light-bg-secondary dark:bg-dark-bg-secondary">
         <div className="container mx-auto px-6">
           <h2 className="font-titulos text-3xl sm:text-4xl font-bold text-light-text-principal dark:text-dark-text-principal text-center mb-10">
             iPhones <span className="text-brand-acento">Destacados</span>
@@ -143,18 +126,11 @@ const HomePage = () => {
             </Link>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       <div className="h-px bg-light-borde dark:bg-dark-borde w-3/4 mx-auto my-8 md:my-12"></div>
       
-      {/* 3. Sección Accesorios Destacados con animación on-scroll */}
-      <motion.section
-        className="py-12 md:py-16 bg-light-bg dark:bg-dark-bg"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={sectionOnScrollViewVariants}
-      >
+      <section className="py-12 md:py-16 bg-light-bg dark:bg-dark-bg">
         <div className="container mx-auto px-6">
           <h2 className="font-titulos text-3xl sm:text-4xl font-bold text-light-text-principal dark:text-dark-text-principal text-center mb-10">
             Accesorios <span className="text-brand-acento">Esenciales</span>
@@ -176,7 +152,7 @@ const HomePage = () => {
             </Link>
           </div>
         </div>
-      </motion.section>
+      </section>
     </div>
   );
 };

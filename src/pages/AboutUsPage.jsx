@@ -1,4 +1,4 @@
-// src/pages/AboutUsPage.jsx
+// src/pages/AboutUsPage.jsx (actualizado)
 import React from 'react';
 import StaticPageLayout from '../components/layout/StaticPageLayout';
 
@@ -7,7 +7,7 @@ const AboutUsPage = () => {
     <StaticPageLayout title="Quiénes Somos">
       <p className="mb-4">¡Hola! Somos Facu y Luchi, los apasionados detrás de iPhone Store.</p>
       <p className="mb-4">
-        Desde [Año de Inicio], nos hemos dedicado a ofrecer los mejores productos Apple, especialmente iPhones y accesorios,
+        Nos dedicamos a ofrecer los mejores productos Apple, especialmente iPhones y accesorios,
         a nuestra comunidad en Tortugas, Rosario y alrededores. Creemos firmemente en la calidad, la transparencia y, sobre todo,
         en brindar una atención personalizada que te haga sentir como en casa.
       </p>

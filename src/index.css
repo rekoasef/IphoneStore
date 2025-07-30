@@ -1,18 +1,13 @@
 /* src/index.css */
-/* ... @font-face si los tienes ... */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
   @apply bg-light-bg text-light-text-principal font-textos antialiased;
-  /* Los estilos dark: se aplicarán cuando <html> tenga la clase .dark */
   @apply dark:bg-dark-bg dark:text-dark-text-principal;
 }
 
 h1, h2, h3, h4, h5, h6 {
   @apply font-titulos;
-  /* Si necesitas colores diferentes para títulos en claro/oscuro */
-  /* @apply text-light-text-principal dark:text-dark-text-principal; */
 }

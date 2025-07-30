@@ -1,25 +1,19 @@
 // src/pages/CatalogPage.jsx
 import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/products/ProductCard';
-import ProductFilters from '../components/products/ProductFilters';
+import ProductFilters from '../components/products/ProductFilters'; // Usará la versión simplificada
 import { getAllProducts } from '../services/productService';
 import { ClipLoader } from 'react-spinners';
 
-const initialFiltersState = {
-  iphone: { model: 'todos', capacity: 'todas', condition: 'all', priceMin: '', priceMax: '' },
-  accessory: { type: 'todos', compatibility: '' }
-};
-
 const CatalogPage = () => {
-  const [allProducts, setAllProducts] = useState([]); // Lista completa de Firebase
-  const [displayedProducts, setDisplayedProducts] = useState([]); // Lista filtrada a mostrar
+  const [allProducts, setAllProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Estados para los filtros
+  // Estados para los filtros simplificados
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all'); // 'all', 'iphones', 'accessories'
-  const [filters, setFilters] = useState(initialFiltersState);
 
   // Carga inicial de productos desde Firebase
   useEffect(() => {
@@ -54,32 +48,9 @@ const CatalogPage = () => {
     if (searchTerm.trim() !== '') {
       filtered = filtered.filter(p => p.name?.toLowerCase().includes(searchTerm.toLowerCase()));
     }
-    
-    // 3. Aplicar filtros avanzados
-    const { iphone: iphoneFilters, accessory: accessoryFilters } = filters;
-    
-    filtered = filtered.filter(p => {
-        if (p.type?.toLowerCase() === 'iphone') {
-            if (iphoneFilters.model !== 'todos' && p.iphoneModel?.toLowerCase().replace(/\s+/g, '-') !== iphoneFilters.model) return false;
-            if (iphoneFilters.capacity !== 'todas' && p.storageCapacity?.toLowerCase() !== iphoneFilters.capacity) return false;
-            if (iphoneFilters.condition !== 'all' && p.condition?.toLowerCase() !== iphoneFilters.condition) return false;
-            if (iphoneFilters.priceMin && p.price < parseFloat(iphoneFilters.priceMin)) return false;
-            if (iphoneFilters.priceMax && p.price > parseFloat(iphoneFilters.priceMax)) return false;
-        } else if (p.type?.toLowerCase() === 'accessory') {
-            if (accessoryFilters.type !== 'todos' && p.category?.toLowerCase().replace(/\s+/g, '-') !== accessoryFilters.type) return false;
-            if (accessoryFilters.compatibility && !p.accessoryFor?.some(comp => comp.toLowerCase().includes(accessoryFilters.compatibility.toLowerCase()))) return false;
-        }
-        return true;
-    });
 
     setDisplayedProducts(filtered);
-
-  }, [searchTerm, selectedCategory, filters, allProducts]);
-
-  const clearAdvancedFilters = () => {
-    setSearchTerm(''); // También limpiamos la búsqueda
-    setFilters(initialFiltersState);
-  };
+  }, [searchTerm, selectedCategory, allProducts]);
 
   // Componente interno para los botones de las pestañas
   const TabButton = ({ category, label }) => {
@@ -118,9 +89,6 @@ const CatalogPage = () => {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         selectedCategory={selectedCategory}
-        filters={filters}
-        setFilters={setFilters}
-        onClearFilters={clearAdvancedFilters}
       />
 
       {loading ? (
@@ -140,7 +108,7 @@ const CatalogPage = () => {
             No se encontraron productos con los criterios actuales.
           </p>
           <button
-            onClick={() => { setSelectedCategory('all'); clearAdvancedFilters(); }}
+            onClick={() => { setSelectedCategory('all'); setSearchTerm(''); }}
             className="font-textos px-6 py-2.5 rounded-lg bg-brand-acento hover:opacity-80 text-white font-semibold transition-colors"
           >
             Ver Todos los Productos
